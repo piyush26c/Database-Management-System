@@ -1,0 +1,27 @@
+>>>[A]
+
+>[1] >  CREATE TABLE cust_mstr ( cust_no NUMBER(3,0) PRIMARY KEY CONSTRAINT check_cust_no CHECK(cust_no > 99 and cust_no <=999 ), fname VARCHAR(30) NOT NULL, lname VARCHAR(30) NOT NULL);
+
+>[1] >  CREATE TABLE add_dets (code_no NUMBER(3,0) PRIMARY KEY, add1 VARCHAR(30) NOT NULL, add2 VARCHAR(30) NOT NULL, state VARCHAR(30) NOT NULL, city VARCHAR(30) NOT NULL, pincode NUMBER(6,0) NOT NULL,CONSTRAINT check_code_no CHECK(code_no > 99 and code_no < 999), CONSTRAINT check_pincode CHECK (pincode > 99999) );
+
+#################################################################################################
+>[1] > CREATE TABLE add_dets (code_no NUMBER(3,0), add1 VARCHAR(30) DEFAULT NULL, add2 VARCHAR(30) DEFAULT NULL, state VARCHAR(30) DEFAULT NULL, city VARCHAR(30) DEFAULT NULL, pincode NUMBER(6,0) DEFAULT NULL,CONSTRAINT check_code_no CHECK(code_no > 99 and code_no < 999), CONSTRAINT check_pincode CHECK (pincode > 99999), CONSTRAINT pk_add_dets PRIMARY KEY(code_no));
+
+##################################################################################################
+>[2] >  SELECT add_dets.add1 as address1, add_dets.add2 as address2 FROM cust_mstr, add_dets WHERE add_dets.code_no = cust_mstr.cust_no;
+
+>[3] > 1] RETRIEVING DATA OPERATION : -> SELECT *FROM view_add_dets;
+	   2] INSERT OPERATION ON VIEW: -> INSERT INTO view_add_dets VALUES(909, 'patiyal');
+	   3] UPDATE OPERATION ON VIEW: -> UPDATE view_add_dets SET code_no = 109 WHERE city = 'pune';
+	   4] DELETE OPERATION ON VIEW: -> DELETE view_add_dets WHERE code_no = 101
+	   
+	  
+>>>[B]
+
+>[1] >  CREATE TABLE  branch_mstr(branch_name VARCHAR(30), branch_no NUMBER(3,0), CONSTRAINT pk_branch_mstr PRIMARY KEY(branch_no));
+
+>[1] > CREATE TABLE emp_mstr (emp_no NUMBER(3,0), f_name VARCHAR(30) NOT NULL, m_name VARCHAR(30) NOT NULL, l_name VARCHAR(30) NOT NULL, dept VARCHAR(30) NOT NULL, desg VARCHAR(30) NOT NULL, branch_no NUMBER(3,0) NOT NULL, FOREIGN KEY(branch_no) REFERENCES branch_mstr ON DELETE CASCADE, CONSTRAINT pk_emp_no PRIMARY KEY(emp_no), CONSTRAINT check_emp_no CHECK(emp_no > 99), CONSTRAINT check_branch_no CHECK(branch_no > 99));
+
+>[2] > SELECT emp_mstr.emp_no, emp_mstr.f_name, emp_mstr.m_name, emp_mstr.l_name, emp_mstr.dept, emp_mstr.desg, emp_mstr.branch_no, branch_mstr.branch_name FROM emp_mstr, branch_mstr WHERE branch_mstr.branch_no = emp_mstr.branch_no;
+
+	  

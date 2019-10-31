@@ -1,0 +1,65 @@
+>>> SET SERVEROUTPUT ON
+
+#########
+
+>>
+ > CREATE TABLE stud61( roll_no NUMBER(3,0), attendance NUMBER(4,2), status VARCHAR2(2));
+ 
+DECLARE
+	mroll_no stud61.roll_no%type;
+	mattendance stud61.attendance%type;
+	mstatus stud61.status%type;
+	
+BEGIN
+	mroll_no := &roll_no;
+	SELECT roll_no, attendance INTO mroll_no, mattendance
+	FROM stud61
+	WHERE roll_no = mroll_no;
+	IF mattendance < 75 THEN
+		DBMS_OUTPUT.PUT_LINE ('term not granted');
+		UPDATE stud61
+		SET status = 'D'
+		WHERE roll_no = mroll_no;
+	ELSE
+		DBMS_OUTPUT.PUT_LINE ('term granted');
+		UPDATE stud61
+		SET status = 'ND'
+		WHERE roll_no = mroll_no;
+	END IF;
+
+EXCEPTION
+	WHEN NO_DATA_FOUND THEN
+		DBMS_OUTPUT.PUT_LINE ('invalid roll number entered');
+	WHEN OTHERS THEN
+		DBMS_OUTPUT.PUT_LINE ('error');
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operaions');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');
+
+END;
+/
+
+##################################################################################################
+
+>>
+ >  CREATE TABLE bank62 (acc_no NUMBER(3,0), acc_hold_name VARCHAR(30), status VARCHAR(30));
+ 
+DECLARE
+	total_row NUMBER(3);
+BEGIN 
+	UPDATE bank62 SET status = 'active'
+	WHERE status = 'inactive';
+	IF SQL%FOUND THEN
+		total_row := SQL%ROWCOUNT;
+		DBMS_OUTPUT.PUT_LINE(total_row || ' rows affected');
+	ELSIF SQL%NOTFOUND THEN
+		DBMS_OUTPUT.PUT_LINE('no rows affected');
+
+	END IF;
+END;
+/
+
+

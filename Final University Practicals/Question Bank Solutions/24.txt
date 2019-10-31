@@ -1,0 +1,47 @@
+>>>>[24]
+ > CREATE TABLE new_class_24_1 (roll_no NUMBER(10,0) UNIQUE NOT NULL, name VARCHAR(30) NOT NULL);
+ > CREATE TABLE old_class_24_1 (roll_no NUMBER(10,0) UNIQUE NOT NULL, name VARCHAR(30) NOT NULL);
+>>
+DECLARE
+CURSOR c_oldclass_24_1 IS
+SELECT *FROM old_class_24_1;
+
+CURSOR c_newclasschk_24_1(moname VARCHAR) IS
+SELECT roll_no FROM new_class_24_1 
+WHERE name = moname;
+
+moname new_class_24_1.name%type;
+moroll_no new_class_24_1.roll_no%type;
+
+BEGIN
+ OPEN c_oldclass_24_1;
+ IF c_oldclass_24_1%ISOPEN THEN
+ LOOP
+	FETCH c_oldclass_24_1 INTO moroll_no, moname;
+	EXIT WHEN c_oldclass_24_1%NOTFOUND;
+	OPEN c_newclasschk_24_1(moname);	
+	IF c_newclasschk_24_1%FOUND THEN	
+		DBMS_OUTPUT.PUT_LINE('roll no : ' || moroll_no || ' name : ' || moname || ' exists in new table.');
+	ELSE
+		DBMS_OUTPUT.PUT_LINE('roll no : ' || moroll_no || ' name : ' || moname || ' inserting in new table.');
+		INSERT INTO new_class_24_1 VALUES (moroll_no, moname);
+	END IF;
+	CLOSE c_newclasschk_24_1;
+ END LOOP;
+ END IF;
+ CLOSE c_oldclass_24_1;
+
+EXCEPTION 
+	WHEN INVALID_CURSOR THEN
+		DBMS_OUTPUT.PUT_LINE('attempts are made to make a cursor operation that is not allowed');
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operaions');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');	
+END;
+/
+
+
+> TRUNCATE TABLE new_class_24_1;

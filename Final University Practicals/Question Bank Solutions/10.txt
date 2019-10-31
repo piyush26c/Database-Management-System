@@ -1,0 +1,45 @@
+>>[10.1] same as [6.1]
+
+################# TRIGGER
+
+>>[10.2]
+ >  CREATE TABLE clientmstr10_2 (emp_name VARCHAR(30) NOT NULL UNIQUE, salary NUMBER(10,2) NOT NULL);
+ >	CREATE TABLE audittrade10_2 (emp_name VARCHAR(30) NOT NULL, salary NUMBER(10,2) NOT NULL);
+ >  ALTER TABLE audittrade10_2 ADD opt VARCHAR(30);
+
+ >>
+CREATE OR REPLACE TRIGGER t
+AFTER DELETE OR UPDATE ON clientmstr10_2
+FOR EACH ROW
+ENABLE
+DECLARE
+	opt audittrade10_2.opt%type;
+BEGIN
+	IF UPDATING THEN
+		opt := 'update';
+	ELSIF DELETING THEN
+		opt := 'delete';
+	END IF;
+	INSERT INTO audittrade10_2 VALUES (:OLD.emp_name, :OLD.salary, opt);
+END;
+/
+
+
+
+>>>
+statement level triggers???
+CREATE OR REPLACE TRIGGER t
+AFTER DELETE ON clientmstr10_2
+BEGIN
+INSERT INTO audittrade10_2(emp_name, salary, opt) VALUES (:old.emp_name,:old.salary, 'delete');
+END;
+/
+create or replace trigger t2 before update on clientmstr10_2
+declare
+op varchar(10);
+begin
+if updating then
+op:='update';
+end if;
+insert into audittrade10_2 values('',op);
+end;

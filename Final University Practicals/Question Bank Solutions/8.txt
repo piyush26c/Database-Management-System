@@ -1,0 +1,132 @@
+>> [8.1]
+ >  CREATE TABLE fine81 ( roll_no NUMBER(3), FOREIGN KEY(roll_no) REFERENCES borrower81 ON DELETE CASCADE, dor DATE, famount NUMBER(10,2));
+ >  CREATE TABLE borrower81 (roll_no NUMBER(3) PRIMARY KEY, bname VARCHAR(30), doi DATE, book_name VARCHAR(30), status VARCHAR(30)    );
+
+CREATE OR REPLACE PROCEDURE compute(mdays IN NUMBER, mroll_no IN NUMBER) IS 
+mfamount NUMBER(10, 2);
+BEGIN 
+	IF (mdays > 15 AND mdays < 30) THEN
+		mfamount := (mdays - 15)*5;
+		INSERT INTO fine81 VALUES (mroll_no, SYSDATE, mfamount);
+	ELSIF (mdays > 30) THEN
+		mfamount := (mdays - 30)*50 + 75;
+		INSERT INTO fine81 VALUES (mroll_no, SYSDATE, mfamount);
+	ELSE
+		mfamount := 0;
+	
+	END IF;
+	UPDATE borrower81 SET status = 'R'
+	WHERE roll_no = mroll_no;	
+EXCEPTION
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operaions');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');		
+END;
+/
+
+>>
+DECLARE
+mroll_no NUMBER(3);
+mdoi DATE;
+mbook_name VARCHAR(30);
+mdays NUMBER(3,0);
+
+BEGIN
+	mroll_no := &roll_no;
+	mbook_name := &book_name;
+	SELECT doi INTO mdoi
+	FROM borrower81
+	WHERE roll_no = mroll_no AND book_name = mbook_name;
+	mdays := SYSDATE - mdoi; 
+	compute(mdays, mroll_no);
+
+EXCEPTION
+	WHEN NO_DATA_FOUND THEN
+		DBMS_OUTPUT.PUT_LINE('roll number and book name a pair does not exits in database');
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operaions');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');		
+END;
+/
+
+
+
+
+
+
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~function :
+>>>[12.1]
+
+ >  CREATE TABLE fine12_1 ( roll_no NUMBER(3), FOREIGN KEY(roll_no) REFERENCES borrower12_1 ON DELETE CASCADE, dor DATE, famount NUMBER(10,2));
+ >  CREATE TABLE borrower12_1 (roll_no NUMBER(3) PRIMARY KEY, bname VARCHAR(30), doi DATE, book_name VARCHAR(30), status VARCHAR(30)    );
+
+>> [FUNCTION PL/SQLBLOCK]
+
+CREATE OR REPLACE FUNCTION compute12_1(mdays IN NUMBER, mroll_no IN NUMBER)  
+RETURN NUMBER
+IS
+mfamount NUMBER(10, 2);
+BEGIN 
+	IF (mdays > 15 AND mdays < 30) THEN
+		mfamount := (mdays - 15)*5;
+		INSERT INTO fine12_1 VALUES (mroll_no, SYSDATE, mfamount);
+	ELSIF (mdays > 30) THEN
+		mfamount := (mdays - 30)*50 + 75;
+		INSERT INTO fine12_1 VALUES (mroll_no, SYSDATE, mfamount);
+	ELSE
+		mfamount := 0;
+	
+	END IF;
+	UPDATE borrower12_1 SET status = 'R'
+	WHERE roll_no = mroll_no;	
+			
+	RETURN 0;
+EXCEPTION
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operaions');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');		
+
+END;
+/
+
+>>
+DECLARE
+mroll_no NUMBER(3);
+mdoi DATE;
+mbook_name VARCHAR(30);
+mdays NUMBER(3,0);
+freturn NUMBER(1,0);
+
+BEGIN
+	mroll_no := &roll_no;
+	mbook_name := &book_name;
+	SELECT doi INTO mdoi
+	FROM borrower12_1
+	WHERE roll_no = mroll_no AND book_name = mbook_name;
+	mdays := SYSDATE - mdoi; 
+	freturn := compute12_1(mdays, mroll_no);
+
+EXCEPTION
+	WHEN NO_DATA_FOUND THEN
+		DBMS_OUTPUT.PUT_LINE('roll number and book name a pair does not exits in database');
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operaions');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');		
+END;
+/

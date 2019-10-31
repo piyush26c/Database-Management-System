@@ -1,0 +1,43 @@
+>>>[23]
+ > CREATE TABLE bank23_1 (acc_no NUMBER(3,0) UNIQUE NOT NULL, balance NUMBER(10,0) NOT NULL, acc_type VARCHAR(30) NOT NULL, transc_date DATE NOT NULL);
+ > ALTER TABLE bank23_1 RENAME COLUMN transc_date TO open_date;
+ > CREATE TABLE inact_master_table_21_1 (acc_no NUMBER(3,0) NOT NULL, acc_type VARCHAR(30) NOT NULL, open_date DATE NOT NULL);
+>>> row level cursor
+
+DECLARE
+macc_no bank23_1.acc_no%type;
+mbalance bank23_1.balance%type;
+macc_type bank23_1.acc_type%type;
+modate bank23_1.open_date%type;
+CURSOR c_bank23_1 IS 
+SELECT acc_no, balance, acc_type, open_date
+FROM bank23_1;
+
+BEGIN
+	OPEN c_bank23_1;
+	IF c_bank23_1%ISOPEN THEN
+	LOOP
+		FETCH c_bank23_1 INTO macc_no, mbalance,macc_type, modate;
+		EXIT WHEN c_bank23_1%NOTFOUND;
+		IF c_bank23_1%FOUND THEN
+			IF SYSDATE - modate >= 365 THEN
+				INSERT INTO inact_master_table_21_1 VALUES(macc_no, macc_type, modate);
+			END IF;
+		END IF;
+	END LOOP;
+	END IF;
+	CLOSE c_bank23_1;
+EXCEPTION
+	WHEN INVALID_CURSOR THEN
+		DBMS_OUTPUT.PUT_LINE('attempts are made to make a cursor operation that is not allowed');
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operaions');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');	
+END;
+/	
+
+				
+		

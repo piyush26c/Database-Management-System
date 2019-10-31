@@ -1,0 +1,24 @@
+ > [1]
+ 
+ >CREATE TABLE branch(branch_name VARCHAR(30), branch_city VARCHAR(30) NOT NULL, assets NUMBER(5) NOT NULL, PRIMARY KEY(branch_name), CHECK(assets >= 0));
+ 
+ > CREATE TABLE account(acc_no NUMBER(3), branch_name VARCHAR(30), balance NUMBER(5), PRIMARY KEY(acc_no), FOREIGN KEY(branch_name) REFERENCES branch ON DELETE CASCADE, CHECK(balance >= 0));
+ 
+ > CREATE TABLE customer(cust_name VARCHAR(30), cust_street VARCHAR(30) NOT NULL, cust_city VARCHAR(30) NOT NULL, PRIMARY KEY(cust_name));
+ 
+ > CREATE TABLE depositor(cust_name VARCHAR(30), acc_no NUMBER(3), FOREIGN KEY(cust_name) REFERENCES customer ON DELETE CASCADE, FOREIGN KEY(acc_no) REFERENCES account ON DELETE CASCADE);
+ 
+ > CREATE TABLE loan(loan_no NUMBER(3), branch_name VARCHAR(30), amount NUMBER(5) NOT NULL, FOREIGN KEY(branch_name) REFERENCES branch ON DELETE CASCADE, CHECK(amount >= 0), PRIMARY KEY(loan_no) );
+ 
+ >CREATE TABLE borrower(cust_name VARCHAR(30), loan_no NUMBER(3), FOREIGN KEY(cust_name) REFERENCES customer ON DELETE CASCADE, FOREIGN KEY(loan_no) REFERENCES loan ON DELETE CASCADE);
+ 
+ >[2] >  CREATE SYNONYM cust FOR customer;
+ >[3] > ALTER TABLE customer ADD phone_no  NUMBER(10);
+ >[4] > ALTER TABLE customer DROP  column phone_no;
+ >[5] > SELECT loan.branch_name FROM loan;
+ >[6] > SELECT borrower.cust_name, loan.loan_no, loan.amount FROM loan, borrower WHERE loan.loan_no = borrower.loan_no;
+ >[7] > SELECT borrower.cust_name FROM borrower, loan WHERE loan.loan_no = borrower.loan_no AND loan.branch_name = 'sbi-akurdi' ORDER BY borrower.cust_name ASC;
+ >[8] > SELECT depositor.cust_name FROM depositor, account WHERE depositor.acc_no = account.acc_no UNION SELECT borrower.cust_name FROM borrower, loan WHERE loan.loan_no = borrower.loan_no;
+ >[9] > SELECT AVG(balance) FROM account WHERE account.branch_name = 'sbi-akurdi';
+ >[10]> SELECT COUNT(account.acc_no), account.branch_name FROM depositor, account WHERE depositor.acc_no = account.acc_no GROUP BY account.branch_name;
+ >[11]> DELETE branch WHERE branch_name = 'sbi-nigdi';

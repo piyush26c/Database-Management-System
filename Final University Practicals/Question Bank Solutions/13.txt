@@ -1,0 +1,107 @@
+>>>[13.1]
+ > CREATE TABLE activeacc13_1 (acc_no NUMBER(3,0) UNIQUE NOT NULL, branch_name VARCHAR(30) NOT NULL);
+ > CREATE TABLE acc13_1 (acc_no NUMBER(3,0) UNIQUE NOT NULL, branch_name VARCHAR(30) NOT NULL, status VARCHAR(1) NOT NULL);
+ 
+#####procedure
+>>>
+CREATE OR REPLACE PROCEDURE checkstatus13_1(macc_no NUMBER, mbranch_name VARCHAR, mstatus VARCHAR) IS
+BEGIN
+	IF mstatus = 'A' THEN
+		DBMS_OUTPUT.PUT_LINE('ACCOUNT : ' || macc_no || ' is Active');
+		INSERT INTO activeacc13_1 VALUES (macc_no, mbranch_name);
+	ELSE
+		DBMS_OUTPUT.PUT_LINE('ACCOUNT : ' || macc_no || ' is Inactive');
+	END IF;
+
+EXCEPTION
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operaions');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');
+END;
+/
+
+##calling block
+DECLARE
+macc_no acc13_1.acc_no%type;
+mbranch_name acc13_1.branch_name%type;
+mstatus acc13_1.status%type;
+
+BEGIN
+	macc_no := &acc_no;
+	mbranch_name := &branch_name;
+	SELECT status INTO mstatus
+	FROM acc13_1
+	WHERE acc13_1.acc_no = macc_no AND acc13_1.branch_name = mbranch_name;	
+	checkstatus13_1(macc_no, mbranch_name, mstatus);
+
+EXCEPTION
+	WHEN NO_DATA_FOUND THEN
+		DBMS_OUTPUT.PUT_LINE('no branch name and account number pair found');
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operations');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');
+
+END;
+/
+
+
+
+#########function
+>>>
+CREATE OR REPLACE FUNCTION checkstatus13_2(macc_no NUMBER, mbranch_name VARCHAR, mstatus VARCHAR) 
+RETURN NUMBER
+IS
+BEGIN
+	IF mstatus = 'A' THEN
+		DBMS_OUTPUT.PUT_LINE('ACCOUNT : ' || macc_no || ' is Active');
+		INSERT INTO activeacc13_1 VALUES (macc_no, mbranch_name);
+	ELSE
+		DBMS_OUTPUT.PUT_LINE('ACCOUNT : ' || macc_no || ' is Inactive');
+	END IF;
+
+RETURN 0;
+EXCEPTION
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operaions');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');
+END;
+/
+
+##calling block
+DECLARE
+macc_no acc13_1.acc_no%type;
+mbranch_name acc13_1.branch_name%type;
+mstatus acc13_1.status%type;
+freturn NUMBER(1,0);
+BEGIN
+	macc_no := &acc_no;
+	mbranch_name := &branch_name;
+	SELECT status INTO mstatus
+	FROM acc13_1
+	WHERE acc13_1.acc_no = macc_no AND acc13_1.branch_name = mbranch_name;	
+	freturn := checkstatus13_2(macc_no, mbranch_name, mstatus);
+
+EXCEPTION
+	WHEN NO_DATA_FOUND THEN
+		DBMS_OUTPUT.PUT_LINE('no branch name and account number pair found');
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operations');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');
+
+END;
+/
+	
+	
+	

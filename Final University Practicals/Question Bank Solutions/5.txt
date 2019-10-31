@@ -1,0 +1,7 @@
+>[5.a] -done already
+
+>[5.b]
+ > CREATE TABLE add_dets1 (code_no NUMBER(3,0), pincode NUMBER(6,0), CONSTRAINT fk_code_no3 FOREIGN KEY(code_no) REFERENCES cust_mstr, CONSTRAINT check_pincode_3 CHECK(pincode > 99999));
+ >  SELECT *FROM cust_mstr WHERE cust_mstr.cust_no IN (SELECT add_dets1.code_no FROM add_dets1 WHERE cust_mstr.cust_no = add_dets1.code_no AND add_dets1.code_no >= 102);
+ 
+ (Here I have use condition of greater than because Previously I had inserted cust_no as pure 3 digit integers, here we can use alphanumeric codes so that we will have proper condition to classify the code_no in add_dets1 according to given condition)

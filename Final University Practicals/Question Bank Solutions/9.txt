@@ -1,0 +1,41 @@
+>>[9.1]
+
+ >  CREATE TABLE stud91 (roll_no NUMBER(4), attend NUMBER(5,2),PRIMARY KEY(roll_no, attend), status VARCHAR(1));
+ >  CREATE TABLE dstud91 (roll_no NUMBER(4), attend NUMBER(5,2), FOREIGN KEY(roll_no, attend) REFERENCES stud91 ON DELETE CASCADE);
+ 
+>>
+DECLARE
+	mroll_no stud91.roll_no%type;
+	mattend stud91.attend%type;
+	mstatus stud91.status%type;
+	CURSOR c IS 
+	SELECT roll_no, attend, status
+	FROM stud91
+	WHERE attend < 75;
+BEGIN
+	OPEN c;
+	IF C%ISOPEN THEN
+	LOOP
+		FETCH c INTO mroll_no, mattend, mstatus;
+		EXIT WHEN c%NOTFOUND;
+		IF c%FOUND THEN
+			UPDATE stud91 SET status = 'D'
+			WHERE roll_no = mroll_no;
+			INSERT INTO dstud91 VALUES (mroll_no, mattend);
+		END IF;
+	END LOOP;	
+	END IF;
+	CLOSE c;
+
+EXCEPTION
+	WHEN INVALID_CURSOR THEN
+		DBMS_OUTPUT.PUT_LINE('attempts are made to make a cursor operation that is not allowed');
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operaions');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');	
+END;
+/	
+	

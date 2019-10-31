@@ -1,0 +1,55 @@
+>>>[27]
+
+ > CREATE TABLE customer27_1 (cust_id NUMBER(3,0) UNIQUE NOT NULL, cust_name VARCHAR(30) NOT NULL);
+ > ALTER TABLE customer27_1 ADD csalary NUMBER(10,2);
+
+>>
+CREATE OR REPLACE TRIGGER tcust27_1
+AFTER UPDATE OR DELETE OR INSERT ON customer27_1
+FOR EACH ROW
+DECLARE
+	mcsalary customer27_1.csalary%type;
+	mdiff NUMBER(10,2) := 0.00;
+BEGIN
+	
+	IF UPDATING THEN
+		mdiff := :NEW.csalary - :OLD.csalary;
+		DBMS_OUTPUT.PUT_LINE('updating, difference : ' || mdiff);
+	ELSIF INSERTING THEN
+		DBMS_OUTPUT.PUT_LINE('inserting, difference : ' || mdiff);
+	ELSIF DELETING THEN
+		DBMS_OUTPUT.PUT_LINE('deleting, difference : ' || mdiff);
+	END IF;
+END;
+/
+	
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

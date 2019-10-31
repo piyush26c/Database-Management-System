@@ -1,0 +1,64 @@
+>>>[14.1]
+ >  CREATE TABLE studmarks14_1 (roll_no NUMBER(3,0)UNIQUE NOT NULL , sname VARCHAR(30) NOT NULL, total_marks NUMBER(5,0) NOT NULL);
+ >   CREATE TABLE result14_1 (roll_no NUMBER(3,0) UNIQUE NOT NULL, sname VARCHAR(30) NOT NULL, rclass VARCHAR(30) NOT NULL);
+ 
+######procedure
+CREATE OR REPLACE PROCEDURE procgrade14_1(mroll_no NUMBER, msname VARCHAR, mtotal_marks NUMBER) IS
+mclass result14_1.rclass%type;
+BEGIN
+	IF mtotal_marks <= 1500 AND mtotal_marks >= 990 THEN
+		mclass := 'Distinction';
+		DBMS_OUTPUT.PUT_LINE('Marks : ' || mtotal_marks || ' falls in  category : DISTINCTION');
+	ELSIF mtotal_marks <= 900 AND mtotal_marks >= 989 THEN
+		mclass := 'First Class';
+		DBMS_OUTPUT.PUT_LINE('Marks : ' || mtotal_marks || ' falls in  category : FIRST CLASS');
+	ELSIF mtotal_marks <= 899 AND mtotal_marks >=825 THEN
+		mclass := 'Higher Second Class';
+		DBMS_OUTPUT.PUT_LINE('Marks : ' || mtotal_marks || ' falls in  category : HIGHER SECOND CLASS');
+	ELSE		
+		mclass := 'Fail';
+		DBMS_OUTPUT.PUT_LINE('Marks : ' || mtotal_marks || ' falls in  category : FAIL');
+	END IF;
+	INSERT INTO result14_1 VALUES (mroll_no, msname, mclass);
+
+EXCEPTION
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operations');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');
+END;
+/
+
+###calling
+DECLARE
+mroll_no studmarks14_1.roll_no%type;
+msname studmarks14_1.sname%type;
+mtotal_marks studmarks14_1.total_marks%type;
+
+BEGIN
+	mroll_no := &roll_no;
+	SELECT roll_no, sname, total_marks INTO mroll_no, msname, mtotal_marks
+	FROM studmarks14_1
+	WHERE
+	roll_no = mroll_no;
+	procgrade14_1(mroll_no, msname, mtotal_marks);
+
+EXCEPTION
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operations');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');
+END;
+/
+
+
+
+
+
+
+
+

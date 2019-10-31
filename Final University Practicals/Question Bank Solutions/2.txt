@@ -1,0 +1,36 @@
+ > [1]
+ 
+ >CREATE TABLE branch(branch_name VARCHAR(30), branch_city VARCHAR(30) NOT NULL, assets NUMBER(5) NOT NULL, PRIMARY KEY(branch_name), CHECK(assets >= 0));
+ 
+ > CREATE TABLE account(acc_no NUMBER(3), branch_name VARCHAR(30), balance NUMBER(5), PRIMARY KEY(acc_no), FOREIGN KEY(branch_name) REFERENCES branch ON DELETE CASCADE, CHECK(balance >= 0));
+ 
+ > CREATE TABLE customer(cust_name VARCHAR(30), cust_street VARCHAR(30) NOT NULL, cust_city VARCHAR(30) NOT NULL, PRIMARY KEY(cust_name));
+ 
+ > CREATE TABLE depositor(cust_name VARCHAR(30), acc_no NUMBER(3), FOREIGN KEY(cust_name) REFERENCES customer ON DELETE CASCADE, FOREIGN KEY(acc_no) REFERENCES account ON DELETE CASCADE);
+ 
+ > CREATE TABLE loan(loan_no NUMBER(3), branch_name VARCHAR(30), amount NUMBER(5) NOT NULL, FOREIGN KEY(branch_name) REFERENCES branch ON DELETE CASCADE, CHECK(amount >= 0), PRIMARY KEY(loan_no) );
+ 
+ >CREATE TABLE borrower(cust_name VARCHAR(30), loan_no NUMBER(3), FOREIGN KEY(cust_name) REFERENCES customer ON DELETE CASCADE, FOREIGN KEY(loan_no) REFERENCES loan ON DELETE CASCADE);
+ 
+>[2] >  ALTER TABLE branch RENAME COLUMN assets TO property;
+>[3] >  SELECT loan.loan_no FROM loan WHERE loan.branch_name = 'sbi-akurdi' and loan.amount > 12000;
+>[4] > SELECT depositor.cust_name FROM depositor, account WHERE depositor.acc_no = account.acc_no INTERSECT SELECT borrower.cust_name FROM borrower, loan WHERE loan.loan_no = borrower.loan_no;
+>[5] > SELECT customer.cust_name FROM customer MINUS SELECT borrower.cust_name FROM borrower;
+>[6] > SELECT AVG(account.balance), account.branch_name FROM account GROUP BY account.branch_name;
+>[7] > SELECT account.branch_name FROM account HAVING AVG(account.balance) > 12000 GROUP BY account.branch_name;
+>[8] > SELECT COUNT(*) FROM customer;
+>[9] > SELECT SUM(loan.amount) FROM loan;
+>[10]> DELETE loan WHERE loan.amount BETWEEN 1300 AND 1500;
+>[11]> First creating the sequence name roll_seq
+       CREATE SEQUENCE roll_seq
+		MINVALUE 1
+		MAXVALUE 9
+		START WITH 1
+		INCREMENT BY 1
+		CACHE 20;
+		
+	  Then inserting the value in student table (Creating the student table :  CREATE TABLE student(roll_no NUMBER(1), name VARCHAR(30));)'
+	  ->INSERT INTO student VALUES (roll_seq.nextval, 'piyush' );
+	  ->INSERT INTO student VALUES (roll_seq.nextval, 'ayush' );
+	
+

@@ -1,0 +1,24 @@
+>>>[22]
+DECLARE
+num NUMBER(38,0);
+snum VARCHAR(38);
+lnum NUMBER(38,0);
+output VARCHAR(38);
+BEGIN
+	num := &num;
+	lnum := length(num);
+	snum := TO_CHAR(num);	--converting number to string first
+	
+	FOR i IN REVERSE 1..lnum
+	LOOP
+		output := output || SUBSTR(snum, i ,1);		--SUBSTR(string, starting index, length)
+	END LOOP;
+	DBMS_OUTPUT.PUT_LINE('Reverse of given number : ' || snum || ' is : ' || output);
+	
+EXCEPTION
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');
+END;
+/

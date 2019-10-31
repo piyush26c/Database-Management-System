@@ -1,0 +1,27 @@
+>>>[20]
+ > CREATE TABLE supplier20_1 (sid NUMBER(3,0) PRIMARY KEY, sname VARCHAR (30) NOT NULL, saddress VARCHAR(30) NOT NULL);
+ > CREATE TABLE parts20_2 (pid NUMBER(3,0) PRIMARY KEY, pname VARCHAR (30) NOT NULL, color VARCHAR(30) NOT NULL);
+ > CREATE TABLE catalog20_3 (sid NUMBER(3,0),FOREIGN KEY(sid) REFERENCES supplier20_1 ON DELETE CASCADE , pid NUMBER(3,0), FOREIGN KEY(pid) REFERENCES parts20_2 ON DELETE CASCADE, cost NUMBER(10,2) NOT NULL);
+ 
+>>>[20.1]
+ > SELECT pname AS part_name FROM parts20_2 WHERE color = 'green';
+ > SELECT sname FROM supplier20_1, parts20_2, catalog20_3 WHERE parts20_2.color = 'red' AND parts20_2.pid = catalog20_3.pid AND supplier20_1.sid = catalog20_3.sid;
+ > SELECT pname FROM parts20_2, catalog20_3 WHERE catalog20_3.cost > 25 AND parts20_2.pid = catalog20_3.pid;
+ 
+
+>>>[20.2]
+ > CREATE TABLE company20_2 (cname VARCHAR(30) PRIMARY KEY, ccity VARCHAR(30) NOT NULL);
+ > CREATE TABLE person20_1 (pname VARCHAR(30) PRIMARY KEY, cname VARCHAR(30), FOREIGN KEY(cname) REFERENCES company20_2, salary NUMBER(10,2), city VARCHAR(30));
+ > CREATE TABLE manages20_1 (pname VARCHAR(30),FOREIGN KEY(pname) REFERENCES person20_1 ON DELETE CASCADE, manager_name VARCHAR(30) PRIMARY KEY);
+ 
+ >>>  SELECT city FROM person20_1, company20_2 WHERE company20_2.ccity = 'pune' AND company20_2.cname = person20_1.cname AND company20_2.cname = 'idea' AND person20_1.salary > 3000;
+ 
+ 
+ >>>[20.3]
+ >  CREATE TABLE subject20_1 (sub_code VARCHAR(10) PRIMARY KEY, sub_name VARCHAR(30));
+ >  CREATE TABLE student20_2 (roll_no NUMBER(3,0) PRIMARY KEY, sname VARCHAR(30) NOT NULL, address VARCHAR(50) NOT NULL);
+ >  CREATE TABLE marks20_3 (roll_no NUMBER(3,0), FOREIGN KEY(roll_no) REFERENCES student20_2 ON DELETE CASCADE, sub_code VARCHAR(10), FOREIGN KEY(sub_code) REFERENCES subject20_1 ON DELETE CASCADE, marks NUMBER(3,0) NOT NULL);
+ 
+  > SELECT marks20_3.roll_no, AVG(marks) FROM student20_2, marks20_3, subject20_1 WHERE student20_2.roll_no = marks20_3.roll_no GROUP BY marks20_3.roll_no ;
+  
+  > SELECT COUNT(*) AS number_of_stud_failed_DBMS FROM subject20_1, marks20_3 WHERE subject20_1.sub_code = marks20_3.sub_code AND subject20_1.sub_code = 'U125' AND marks20_3.marks = 0;

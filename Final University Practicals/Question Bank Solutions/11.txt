@@ -1,0 +1,26 @@
+>> [11.1] SAME AS [7.1]
+ 
+#########triggers
+>>>[10.3]
+CREATE OR REPLACE TRIGGER t12 
+BEFORE
+INSERT OR UPDATE ON emp11_2
+FOR EACH ROW
+ENABLE
+BEGIN
+	IF :NEW.esalary < 50000 THEN
+		RAISE_APPLICATION_ERROR(-2003, 'salary cannot be less than 50000');
+	ELSE
+		INSERT INTO tracking11_2 VALUES(:NEW.emp_no,:NEW.esalary);
+	END IF;
+EXCEPTION
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operaions');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');
+END;
+/
+	
+>>to drop the trigger

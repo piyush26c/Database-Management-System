@@ -28,6 +28,7 @@ END;
 
 >>>
 statement level triggers???
+==following code is wrong==
 CREATE OR REPLACE TRIGGER t
 AFTER DELETE ON clientmstr10_2
 BEGIN

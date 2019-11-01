@@ -1,0 +1,58 @@
+>>>[15]
+ > mongo
+ > use practisem
+ > db.createCollection("teachers")
+ > cls (to clear the screen)
+>>> 
+> db.teachers.insert ({tname : 'prc', dno : 1, dname : 'COMP', experience : 3, salary : 12000, doj : '3-JUL-19'})
+> db.teachers.insert ({tname : 'yrc', dno : 2, dname : 'IT', experience : 2, salary : 10000, doj : '3-SEP-19'})
+> db.teachers.insert ({tname : 'trc', dno : 3, dname : 'ENTC', experience : 5, salary : 95000, doj : '20-JAN-17'})
+> db.teachers.insert ({tname : 'orc', dno : 4, dname : 'CIVIL', experience : 10, salary : 86560, doj : '20-FEB-16'})
+
+> db.createCollection('students')
+> db.students.insert ({sname : 'adb', roll_no : 101, class : 1});
+> db.students.insert ({sname : 'bnm', roll_no : 102, class : 2});
+> db.students.insert ({sname : 'mnp', roll_no : 103, class : 3});
+> db.students.insert ({sname : 'jio', roll_no : 104, class : 4});
+> db.students.insert ({sname : 'xyz', roll_no : 2, class : 5});
+
+
+>[1] 
+> db.teachers.find().pretty()
+
+>[2]
+> db.teachers.find ({dname : 'COMP'}).pretty()
+
+>[3]
+> db.teachers.find ({$or: [{dname : 'COMP'}, {dname : 'ENTC'}, {dname : 'IT'}]})
+
+>[4]
+> db.teachers.find ({'salary' : {$gte : 10000}, $or: [{dname : 'COMP'}, {dname : 'IT'}, {dname : 'ENTC'}]})
+
+>[5]
+> db.students.find ({$and : [{sname : 'xyz'}, {roll_no : 2}]})
+
+>[6]
+> db.teachers.save ({tname : 'praveen', dno : 1, dname : 'COMP', experience : 10, salary : 87692, doj : '13-DEC-12'})
+OR
+> db.teachers.update ({tname : 'praveen'}, {$set : {dno : 1, dname : 'COMP', experience : 10, salary : 87692, doj : '13-DEC-12'}})
+
+>[7]
+> db.teachers.update ({dname : 'IT'}, {$set : {dname : 'COMP', dno : 1}})
+> db.teachers.update ({dname : 'COMP'}, {$set : {dno : 1}}, {multi : true})
+
+>[8]
+> db.teachers.find ({},{tname : 1, experience : 1, _id : 0 }). pretty ()
+
+>[9]
+> db.teachers.save ({tname : 'naveen', dno : 1, dname : 'COMP', experience : 15, salary : 999692, doj : '13-DEC-09'})
+
+>[10]
+> db.teachers.save({tname : "praveen"}, {$set : {dno : 1, dname : 'COMP', experience : 10, salary : 87692, doj : '13-DEC-12'}} )
+
+>[11]
+> db.teachers.remove ({dname : "IT"})
+
+>[12]
+> db.teachers.find ().limit (3).sort ({tname : 1}).pretty ()
+

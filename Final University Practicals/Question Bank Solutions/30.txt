@@ -1,0 +1,56 @@
+>>>[30]
+> CREATE TABLE product30_1 (pid NUMBER(3,0) PRIMARY KEY, pname VARCHAR(30) NOT NULL);
+> CREATE TABLE order_items30_1 (pid NUMBER(3,0), FOREIGN KEY(pid) REFERENCES product30_1, qty NUMBER(3,0) NOT NULL);
+>  ALTER TABLE product30_1 ADD pprice NUMBER(10,2) NOT NULL;
+
+>>>
+DECLARE
+mpid product30_1.pid%type;
+temp product30_1.pid%type;
+mpprice product30_1.pprice%type;
+mqty order_items30_1.qty%type;
+discount CONSTANT NUMBER(10,2) := 0.55;
+bill_amount NUMBER(30,2);
+
+CURSOR idcheck(mpid NUMBER) IS
+SELECT qty FROM order_items30_1 WHERE order_items30_1.pid = mpid;
+
+prnotfound EXCEPTION;
+
+BEGIN 
+	mpid := &pid;
+	mqty := 0;
+	OPEN idcheck(mpid);
+	IF idcheck%ISOPEN THEN
+		FETCH idcheck INTO temp;
+		IF idcheck%NOTFOUND THEN
+			RAISE prnotfound;
+		ELSE		
+			SELECT qty INTO mqty FROM order_items30_1 WHERE order_items30_1.pid = mpid;
+			IF mqty > 20 THEN
+				DBMS_OUTPUT.PUT_LINE('Hollaa...!!! You have recived 55% Discount on you ordered item');
+				SELECT pprice INTO mpprice FROM product30_1 WHERE product30_1.pid = mpid;
+				bill_amount := (mqty * mpprice ) * (1 - discount);
+				DBMS_OUTPUT.PUT_LINE('Your bill amount : ' || bill_amount);
+			ELSE
+				SELECT pprice INTO mpprice FROM product30_1 WHERE product30_1.pid = mpid;
+				bill_amount := (mqty * mpprice );
+				DBMS_OUTPUT.PUT_LINE('Your bill amount : ' || bill_amount);
+			END IF;
+		END IF;
+	END IF;
+
+EXCEPTION
+	WHEN prnotfound THEN
+		DBMS_OUTPUT.PUT_LINE('Entered product id not found in database');
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operaions');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');
+		
+END;
+/	
+
+	

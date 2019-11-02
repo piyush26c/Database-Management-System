@@ -10,6 +10,70 @@ mpid product29_2.pid%type;
 temp order_items29_2.qty%type;
 CURSOR entrycheck(mpid NUMBER) IS
 SELECT qty FROM order_items29_2 WHERE order_items29_2.pid = mpid;
+myexception EXCEPTION;
+PRAGMA exception_init(myexception, -20989);
+
+BEGIN
+	mpid := &pid;
+	OPEN entrycheck(mpid);
+	IF entrycheck%ISOPEN THEN
+		FETCH entrycheck INTO temp;
+		IF entrycheck%FOUND THEN
+			RAISE myexception;
+		ELSIF entrycheck%NOTFOUND THEN 
+			DELETE FROM product29_2 WHERE product29_2.pid = mpid;	
+		END IF;
+	END IF;
+	CLOSE entrycheck;
+EXCEPTION
+	WHEN myexception THEN
+		DBMS_OUTPUT.PUT_LINE('cannot delete the primary  key having children in order_items29_2(child) table');
+	WHEN INVALID_CURSOR THEN
+		DBMS_OUTPUT.PUT_LINE('attempts are made to make a cursor operation that is not allowed');
+	WHEN VALUE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operaions');
+	WHEN PROGRAM_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
+	WHEN STORAGE_ERROR THEN
+		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');
+END;
+/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##################################################################################################################################
+
+>>>[29] $By PL/SQL BLOCK : 
+
+> CREATE TABLE product29_2(pid NUMBER(3,0) PRIMARY KEY, pname VARCHAR(30) NOT NULL);
+> CREATE TABLE order_items29_2 (pid NUMBER(3,0), FOREIGN KEY(pid) REFERENCES product29_2, qty NUMBER(3,0) NOT NULL);
+> ALTER TABLE product29_2 ADD pprice NUMBER(10,2) NOT NULL;
+
+
+DECLARE
+mpid product29_2.pid%type;
+temp order_items29_2.qty%type;
+CURSOR entrycheck(mpid NUMBER) IS
+SELECT qty FROM order_items29_2 WHERE order_items29_2.pid = mpid;
 
 BEGIN
 	mpid := &pid;

@@ -1,0 +1,35 @@
+>>>>[17]
+>>[1]
+> db.teachers.mapReduce( function(){emit(this.dname, this.salary);}, function(key, values) {return Array.sum(values)},{out : "total2",}   )
+
+> db.total2.find().pretty()
+
+>>[2]
+> db.teachers.mapReduce( function(){emit(this.dname, 1);}, function(key, values) {return Array.sum(values)},{out : "total3",}   )
+
+>>[3]
+> db.orders.insert ({cust_id : 'C1', status : 'A', price : 342})
+> db.orders.insert ({cust_id : 'C1', status : 'A', price : 9992})
+> db.orders.insert ({cust_id : 'C1', status : 'A', price : 121})
+> db.orders.insert ({cust_id : 'C1', status : 'A', price : 432})
+> db.orders.insert ({cust_id : 'C2', status : 'A', price : 42})
+> db.orders.insert ({cust_id : 'C2', status : 'A', price : 919})
+> db.orders.insert ({cust_id : 'C2', status : 'A', price : 9191})
+> db.orders.insert ({cust_id : 'C2', status : 'A', price : 100})
+
+> db.orders.mapReduce (function() {emit(this.cust_id, this.price);}, function(key, values) {return Array.sum(values)}, {out : "total3",})
+
+>>[4]
+> db.teachers.mapReduce (function() {emit(this.dname, this.salary);}, function(key, values) {return Array.sum(values)}, {query : {dname : 'COMP'}, out : 'total4'} )
+
+>>[5]
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,97 @@
+package mongojdbc;
+import java.util.Scanner;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+import com.mongodb.MongoClient;
+public class JavaMongoDemo
+{
+	public static void main( String args[] ){
+		try{
+			
+			MongoClient mongoClient = new MongoClient( "localhost" , 27017 );		// To connect to mongodb server
+			DB db = mongoClient.getDB( "pccoe1" );	// Now connect to your databases
+			Scanner s = new Scanner(System.in);
+			System.out.println("Connect to 'pccoe1' Database successfully....");
+			
+			System.out.println("Enter Name Of Collection : ");			
+			String colname = s.nextLine();
+			DBCollection coll = db.createCollection(colname,null);
+			System.out.println("Collection created successfully");					
+
+			boolean flag = true;
+			while(flag){
+				System.out.println("Operation to perform...\n1.Insert\n2.Retrive\n3.Update\n4.Delete\n5.Exit");
+				int ch=s.nextInt();
+
+				switch(ch){
+				
+				case 1:
+					System.out.println("Inserting Into	Collection...");
+					BasicDBObject doc = new BasicDBObject("title",	"MongoDB1").
+							append("description", "database1").
+							append("likes", 1001).
+							append("url", "http://www.mongodb.com").
+							append("by", "MongoDB");
+					coll.insert(doc);
+					System.out.println("Document inserted successfully");
+					break;
+					
+				case 2:
+					System.out.println("Retriving data...");
+					DBCursor cursor = coll.find();
+					int i=1;
+					while (cursor.hasNext()) { 
+						System.out.println("Inserted Document: "+i);
+						System.out.println(cursor.next());
+						i++;
+					}
+					break;
+					
+				case 3:
+					System.out.println("Update Collection\n");
+					System.out.println("Enter the field you want to update : ");
+					String field = s.next();
+					System.out.println("Enter the value of updated field : ");
+					int field_value = s.nextInt();
+					System.out.println("Enter the key field of the respective document : ");
+					String kf = s.next();
+					System.out.println("Enter the value of key field of the respective document : ");
+					String kfv = s.next();
+					
+					BasicDBObject newDocument = new BasicDBObject();
+					newDocument.append("$set", new BasicDBObject().append(field, field_value));
+							
+					BasicDBObject searchQuery = new BasicDBObject().append(kf, kfv);
+					coll.update(searchQuery, newDocument);
+
+					break;
+				case 4:
+					DBObject myDoc = coll.findOne();
+					coll.remove(myDoc);
+					DBCursor cursor2 = coll.find();
+					int k = 1;
+					while (cursor2.hasNext()) {
+						System.out.println("Inserted Document: " + k);
+						System.out.println(cursor2.next());
+						k++;
+					}
+					System.out.println("Document deleted successfully");
+					break;
+
+				case 5:
+					flag = false;
+					break;
+				}
+
+			}
+			s.close();			
+
+		}catch(Exception e){
+			System.err.println( e.getClass().getName() + ": " +	e.getMessage() );
+		}
+	}
+}

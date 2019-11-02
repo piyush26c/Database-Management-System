@@ -1,0 +1,140 @@
+package mongoo;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+//STEP 1. Import required packages
+
+public class JDBCExample {
+	// JDBC driver name and database URL
+	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+	static final String DB_URL = "jdbc:mysql://localhost/piyushrc";
+
+	// //  Database credentials
+	static final String USER = "root";
+	static final String PASS = "mysql";
+
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		int choice = 0;
+
+
+		Connection conn = null;
+		Statement stmt = null;
+		try{
+		    //STEP 2: Register JDBC driver
+			Class.forName("com.mysql.jdbc.Driver");
+			
+			//    //STEP 3: Open a connection
+			System.out.println("Connecting to database...");
+			conn =  DriverManager.getConnection(DB_URL,USER,PASS);
+
+			//    //STEP 4: Execute a query
+			System.out.println("Creating statement...");
+			stmt = conn.createStatement();
+			boolean flag = true;
+			while(flag) {
+
+				System.out.println("Database Operations are as follows ...");
+				System.out.print("\n 1. Drop table" + "\n 2. Insert"+ "\n 3. Update"+  "\n 4. Delete"+  "\n 5. Show table" + "\n 6. Exit\n");
+				System.out.println("Enter the Choice  : ");
+				choice = scan.nextInt();
+
+				switch(choice) {
+
+				case 1 :
+				{
+					System.out.print("\nEnter the name of table : ");
+					String table_name  = scan.next();
+					String sql = "DROP TABLE " + table_name;
+					stmt.executeUpdate(sql);
+					System.out.print("\nTable deleted Successfully");
+					break;
+				}
+				case 2 :
+				{
+					System.out.print("\nEnter the employe id : ");
+					int emp_id = scan.nextInt();
+					System.out.print("\nEnter the employe name : ");
+					String empname = scan.next();
+					String sql = "INSERT INTO employee VALUES (" + emp_id + ", " + "'" + empname + "'" + ");";
+					stmt.executeUpdate(sql);
+					System.out.print("\nRecord inserted Successfully");
+					break;
+
+				}
+				case 3 : 
+				{
+					System.out.print("\nEnter the employe id to be updated : ");
+					int emp_id = scan.nextInt();
+					System.out.print("\nEnter the employe update name  : ");
+					String empname = scan.next();
+					String sql = "UPDATE employee SET empname = " + "'" + empname + "'" + " WHERE eid = " + emp_id + ";";
+					stmt.executeUpdate(sql);
+					System.out.print("\nRecord updated Successfully");
+					break;
+				}
+				case 4 :
+				{
+					System.out.print("\nEnter the employe id to be deleted: ");
+					int emp_id = scan.nextInt();    		
+					String sql = "DELETE FROM employee WHERE eid = " + emp_id + ";";
+					stmt.executeUpdate(sql);
+					System.out.print("\nRecord deleted Successfully");
+					break;
+				}
+
+				case 5 :
+				{
+					System.out.print("\nEmployee Table : ");    		    		
+					String sql = "SELECT * FROM employee";
+					ResultSet rs = stmt.executeQuery(sql);  
+
+					while(rs.next()){
+						//Retrieve by column name
+						int eid  = rs.getInt("eid");				        
+						String empname = rs.getString("empname");		         
+
+						//Display values
+						System.out.print("ID : " + eid);
+						System.out.print(",   Employee Name : " + empname);
+						System.out.print("\n");				         
+					}
+					rs.close();				
+
+					break;
+				}
+
+				case 6 : 	
+					flag = false;
+					break;
+				}
+
+			}
+		}catch (SQLException se) {
+			// Handle errors for JDBC
+			se.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		} finally {
+			try { if (stmt != null)
+				stmt.close();
+			} catch (SQLException se2) {
+				try { if (conn != null)
+					conn.close();
+				} catch (SQLException se) {
+					se.printStackTrace();
+				}
+			}
+			System.out.println("Goodbye!");
+			scan.close();
+		}
+	}
+}
+
+

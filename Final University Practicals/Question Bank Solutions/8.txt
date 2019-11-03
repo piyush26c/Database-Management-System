@@ -1,6 +1,6 @@
 >> [8.1]
  >  CREATE TABLE fine81 ( roll_no NUMBER(3), FOREIGN KEY(roll_no) REFERENCES borrower81 ON DELETE CASCADE, dor DATE, famount NUMBER(10,2));
- >  CREATE TABLE borrower81 (roll_no NUMBER(3) PRIMARY KEY, bname VARCHAR(30), doi DATE, book_name VARCHAR(30), status VARCHAR(30)    );
+ >  CREATE TABLE borrower81 (roll_no NUMBER(3) PRIMARY KEY, bname VARCHAR(30), doi DATE, book_name VARCHAR(30), status VARCHAR(30));
 
 CREATE OR REPLACE PROCEDURE compute(mdays IN NUMBER, mroll_no IN NUMBER) IS 
 mfamount NUMBER(10, 2);
@@ -12,9 +12,9 @@ BEGIN
 		mfamount := (mdays - 30)*50 + 75;
 		INSERT INTO fine81 VALUES (mroll_no, SYSDATE, mfamount);
 	ELSE
-		mfamount := 0;
-	
+		mfamount := 0;	
 	END IF;
+	
 	UPDATE borrower81 SET status = 'R'
 	WHERE roll_no = mroll_no;	
 EXCEPTION
@@ -59,16 +59,11 @@ END;
 
 
 
-
-
-
-
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~function :
 >>>[12.1]
 
- >  CREATE TABLE fine12_1 ( roll_no NUMBER(3), FOREIGN KEY(roll_no) REFERENCES borrower12_1 ON DELETE CASCADE, dor DATE, famount NUMBER(10,2));
- >  CREATE TABLE borrower12_1 (roll_no NUMBER(3) PRIMARY KEY, bname VARCHAR(30), doi DATE, book_name VARCHAR(30), status VARCHAR(30)    );
+ >  CREATE TABLE fine12_1 (roll_no NUMBER(3), FOREIGN KEY(roll_no) REFERENCES borrower12_1 ON DELETE CASCADE, dor DATE, famount NUMBER(10,2));
+ >  CREATE TABLE borrower12_1 (roll_no NUMBER(3) PRIMARY KEY, bname VARCHAR(30), doi DATE, book_name VARCHAR(30), status VARCHAR(30));
 
 >> [FUNCTION PL/SQLBLOCK]
 

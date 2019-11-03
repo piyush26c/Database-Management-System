@@ -27,20 +27,17 @@ END;
 
 
 >>>
-statement level triggers???
-==following code is wrong==
-CREATE OR REPLACE TRIGGER t
-AFTER DELETE ON clientmstr10_2
+statement level triggers
+CREATE OR REPLACE TRIGGER t10_2
+AFTER DELETE OR UPDATE ON clientmstr10_2
+DECLARE
+	opt audittrade10_2.opt%type;
 BEGIN
-INSERT INTO audittrade10_2(emp_name, salary, opt) VALUES (:old.emp_name,:old.salary, 'delete');
+	IF UPDATING THEN
+		opt := 'update';
+	ELSIF DELETING THEN
+		opt := 'delete';
+	END IF;
+	INSERT INTO audittrade10_2 VALUES (null, null, opt);
 END;
 /
-create or replace trigger t2 before update on clientmstr10_2
-declare
-op varchar(10);
-begin
-if updating then
-op:='update';
-end if;
-insert into audittrade10_2 values('',op);
-end;

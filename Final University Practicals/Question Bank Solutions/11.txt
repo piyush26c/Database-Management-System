@@ -1,6 +1,6 @@
 >> [11.1] SAME AS [7.1]
  
-#########triggers
+#########trigger
 >>>[10.3]
 CREATE OR REPLACE TRIGGER t12 
 BEFORE
@@ -24,3 +24,4 @@ END;
 /
 	
 >>to drop the trigger
+ > DROP TRIGGER trigger_name;

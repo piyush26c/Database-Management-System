@@ -1,6 +1,6 @@
->>[1] > CREATE TABLE fd_dets (fd_sr_no NUMBER(3,0), amount NUMBER(5,2) NOT NULL,CONSTRAINT pk_fd_sr_no PRIMARY KEY(fd_sr_no), CONSTRAINT check_amount CHECK(amount >0), CONSTRAINT check_fd_sr_no CHECK(fd_sr_no > 99) );
+>>[1] > CREATE TABLE fd_dets (fd_sr_no NUMBER(3,0), amount NUMBER(5,2) NOT NULL,CONSTRAINT pk_fd_sr_no PRIMARY KEY(fd_sr_no), CONSTRAINT check_amount CHECK(amount > 0), CONSTRAINT check_fd_sr_no CHECK(fd_sr_no > 99) );
 
-> [2] > CREATE TABLE acc_fd_cust_dets (code_no NUMBER(3,0), acc_fd_no  NUMBER(3,0), CONSTRAINT fk_acc_fd_no FOREIGN KEY(acc_fd_no) REFERENCES fd_dets, CONSTRAINT fk_code_no FOREIGN KEY(code_no) REFERENCES cust_mstr, CONSTRAINT check_code_no1 CHECK(code_no> 99), CONSTRAINT check_acc_fd_no CHECK(acc_fd_no > 99));
+> [2] > CREATE TABLE acc_fd_cust_dets (code_no NUMBER(3,0), acc_fd_no  NUMBER(3,0), CONSTRAINT fk_acc_fd_no FOREIGN KEY(acc_fd_no) REFERENCES fd_dets, CONSTRAINT fk_code_no FOREIGN KEY(code_no) REFERENCES cust_mstr, CONSTRAINT check_code_no1 CHECK(code_no > 99), CONSTRAINT check_acc_fd_no CHECK(acc_fd_no > 99));
 
 #ALTER TABLE cust_mstr MODIFY (fname NULL);
 #ALTER TABLE cust_mstr MODIFY (lname NULL);
@@ -8,9 +8,9 @@
 
 > [3] >  SELECT cust_mstr.fname, cust_mstr.lname, fd_dets.amount FROM cust_mstr, acc_fd_cust_dets, fd_dets  WHERE cust_mstr.cust_no = acc_fd_cust_dets.code_no AND acc_fd_cust_dets.acc_fd_no = fd_dets.fd_sr_no AND fd_dets.amount > 500;
  
-  Aliter ^ : select fname,lname,f.amount from cust_mstr c inner join acc_fd_cust_dets a inner join fd_dets f on a.acc_fd_no = f.fd_sr_no on c.cust_no = a.code_no where f.amount>500;
+  Aliter ^ : select fname,lname,f.amount from cust_mstr c inner join acc_fd_cust_dets a inner join fd_dets f on a.acc_fd_no = f.fd_sr_no on c.cust_no = a.code_no where f.amount > 500;
  
-  Aliter ^ : select fname,lname,fd_dets.amount from cust_mstr inner join acc_fd_cust_dets  inner join fd_dets  on acc_fd_cust_dets.acc_fd_no = fd_dets.fd_sr_no on cust_mstr.cust_no =acc_fd_cust_dets.code_no where fd_dets.amount>5000;
+  Aliter ^ : select fname,lname,fd_dets.amount from cust_mstr inner join acc_fd_cust_dets  inner join fd_dets  on acc_fd_cust_dets.acc_fd_no = fd_dets.fd_sr_no on cust_mstr.cust_no = acc_fd_cust_dets.code_no where fd_dets.amount > 5000;
   
 ******extra shit carried out as my table were containing not null constraints, following only done for view creating and operations; 
 #   ALTER TABLE cust_mstr MODIFY cust_no DEFAULT NULL;
@@ -18,8 +18,8 @@
 #   ALTER TABLE cust_mstr MODIFY lname DEFAULT NULL;
 #   ALTER TABLE fd_dets MODIFY amount DEFAULT NULL;
 #   ALTER TABLE fd_dets MODIFY fd_sr_no DEFAULT NULL;
-#   ALTER TABLE acc_fd_cust_dets MODIFY code_no DEFAULT NULL;
-#   ALTER TABLE acc_fd_cust_dets MODIFY acc_fd_no DEFAULT NULL;
+#	ALTER TABLE acc_fd_cust_dets MODIFY code_no DEFAULT NULL;
+#	ALTER TABLE acc_fd_cust_dets MODIFY acc_fd_no DEFAULT NULL;
 
 > [4.b] > CREATE OR REPLACE VIEW view_c_m_a_f_c_d AS SELECT fname, acc_fd_no FROM cust_mstr, acc_fd_cust_dets WHERE cust_mstr.cust_no = acc_fd_cust_dets.code_no;
 		INSERT OPERATION ON VIEW : NOT ALLOWED
@@ -30,7 +30,7 @@
 			# ALTER TABLE emp_mstr DROP COLUMN desg;
 			# ALTER TABLE emp_mstr DROP COLUMN branch_no;
 			
-		> CREATE TABLE cntc_dets (code_no NUMBER(3,0), cntc_type VARCHAR(30) DEFAULT NULL, cntc_data VARCHAR(30) DEFAULT NULL,CONSTRAINT fk_code_no1 FOREIGN KEY(code_no) REFERENCES emp_mstr ON DELETE CASCADE, CONSTRAINT check_code_no2 CHECK(code_no >99) );
+		> CREATE TABLE cntc_dets (code_no NUMBER(3,0), cntc_type VARCHAR(30) DEFAULT NULL, cntc_data VARCHAR(30) DEFAULT NULL,CONSTRAINT fk_code_no1 FOREIGN KEY(code_no) REFERENCES emp_mstr ON DELETE CASCADE, CONSTRAINT check_code_no2 CHECK(code_no > 99) );
 		
 		> SELECT *FROM emp_mstr LEFT OUTER JOIN cntc_dets ON emp_mstr.emp_no = cntc_dets.code_no;
 		> SELECT *FROM emp_mstr RIGHT OUTER JOIN cntc_dets ON emp_mstr.emp_no = cntc_dets.code_no;

@@ -1,0 +1,133 @@
+>>>[16]
+> db.createCollection("zipcode")
+> db.zipcode.insert ({_id : 101, city : "NYC", state : "NY", pop : 123459823})
+> db.zipcode.insert ({_id : 102, city : "LA", state : "SY", pop : 993459823})
+> db.zipcode.insert ({_id : 104, city : "KYC", state : "NF", pop : 1234598923})
+
+> db.zipcode.aggregate ({$group : {_id: '$state', state_population: {$sum: "$pop"}}}) (retriving statwise population)
+
+>>[1]
+> db.zipcode.aggregate ({$group : {_id: '$state', state_population: {$sum: "$pop"}}}, {$match: {state_population : {$gte: 10*1000*1000}}})
+
+>>>[2]
+> db.teachers.insert ({tname : 'prc', dno : 1, dname : 'COMP', experience : 3, salary : 12000, doj : '3-JUL-19'})
+> db.teachers.insert ({tname : 'prc2', dno : 1, dname : 'COMP', experience : 4, salary : 12089, doj : '13-JUL-19'})
+> db.teachers.insert ({tname : 'prc3', dno : 1, dname : 'COMP', experience : 4, salary : 92089, doj : '23-JUL-19'})
+> db.teachers.insert ({tname : 'yrc', dno : 2, dname : 'IT', experience : 2, salary : 10000, doj : '3-SEP-19'})
+> db.teachers.insert ({tname : 'yrc1', dno : 2, dname : 'IT', experience : 12, salary : 910000, doj : '3-SEP-19'})
+> db.teachers.insert ({tname : 'yrc2', dno : 2, dname : 'IT', experience : 6, salary : 6000, doj : '23-SEP-19'})
+> db.teachers.insert ({tname : 'trc', dno : 3, dname : 'ENTC', experience : 5, salary : 95000, doj : '20-JAN-17'})
+> db.teachers.insert ({tname : 'trc1', dno : 3, dname : 'ENTC', experience : 5, salary : 95098, doj : '29-JAN-17'})
+> db.teachers.insert ({tname : 'trc2', dno : 3, dname : 'ENTC', experience : 5, salary : 5098, doj : '19-JAN-17'})
+> db.teachers.insert ({tname : 'orc', dno : 4, dname : 'CIVIL', experience : 10, salary : 86560, doj : '20-FEB-16'}) 
+> db.teachers.insert ({tname : 'orc1', dno : 4, dname : 'CIVIL', experience : 10, salary : 96560, doj : '20-MAR-16'})
+> db.teachers.insert ({tname : 'orc2', dno : 4, dname : 'CIVIL', experience : 10, salary : 6560, doj : '12-MAR-16'})
+ 
+> db.teachers.aggregate ({$group : {_id : '$dname', average_salary : {$avg : '$salary'}}})
+
+>>>[3]
+> db.teachers.aggregate ({$group : {_id : '$dname', total_number_of_employees : {$sum : 1}}}) ==(1 value here indicates the step value of increment)
+> Extras
+to find max salary from each department
+> db.teachers.aggregate ({$group : {_id : '$dname', max_salary : {$max : '$salary'}}})
+
+>>>[4]
+> db.teachers.aggregate ({$group : {_id : '$dname', total_salary : {$sum : '$salary'}}}, {$match : {total_salary : {$gte : 5000}}})
+
+>>>[5]
+>max : db.teachers.aggregate ({$group : {_id : '$dname', max_salary : {$max : '$salary'}}})
+>min : db.teachers.aggregate ({$group : {_id : '$dname', min_salary : {$min : '$salary'}}})
+>first:db.teachers.aggregate ({$group : {_id : '$dname', first_salary_entery : {$first : '$salary'}}})
+>last:db.teachers.aggregate ({$group : {_id : '$dname', last_salary_entery : {$last : '$salary'}}})
+
+>>>[7]
+> db.students.createIndex ({roll_no : 1}, {unique : true})
+
+>>>[6]
+> db.students.ensureIndex({roll_no : 1})
+
+>>>[8]
+> db.students.ensureIndex({roll_no : 1, sname : 1})
+
+>>>[9]
+> db.system.indexes.find().pretty()
+
+>>[10]
+> db.students.getIndexes()
+> db.teachers.getIndexes()
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

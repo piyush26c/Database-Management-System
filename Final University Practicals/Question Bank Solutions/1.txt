@@ -12,7 +12,7 @@
  
  >CREATE TABLE borrower(cust_name VARCHAR(30), loan_no NUMBER(3), FOREIGN KEY(cust_name) REFERENCES customer ON DELETE CASCADE, FOREIGN KEY(loan_no) REFERENCES loan ON DELETE CASCADE);
  
- >[2] >  CREATE SYNONYM cust FOR customer;
+ >[2] > CREATE SYNONYM cust FOR customer;
  >[3] > ALTER TABLE customer ADD phone_no  NUMBER(10);
  >[4] > ALTER TABLE customer DROP  column phone_no;
  >[5] > SELECT loan.branch_name FROM loan;

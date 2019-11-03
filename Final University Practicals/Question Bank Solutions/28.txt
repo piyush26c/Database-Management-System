@@ -6,10 +6,10 @@ DECLARE
 increment CONSTANT NUMBER(10,2) := 500;
 total_rows NUMBER(3,0);
 BEGIN
-UPDATE customer28_1 SET csalary = csalary + increment;
-IF SQL%FOUND THEN
-	total_rows := SQL%ROWCOUNT;
-	DBMS_OUTPUT.PUT_LINE('number of rows affected : ' || total_rows);
-END IF;
+	UPDATE customer28_1 SET csalary = csalary + increment;
+	IF SQL%FOUND THEN
+		total_rows := SQL%ROWCOUNT;
+		DBMS_OUTPUT.PUT_LINE('number of rows affected : ' || total_rows);
+	END IF;
 END;
 /

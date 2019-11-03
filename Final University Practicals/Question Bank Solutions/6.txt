@@ -29,15 +29,15 @@ BEGIN
 
 EXCEPTION
 	WHEN NO_DATA_FOUND THEN
-		DBMS_OUTPUT.PUT_LINE ('invalid roll number entered');
-	WHEN OTHERS THEN
-		DBMS_OUTPUT.PUT_LINE ('error');
+		DBMS_OUTPUT.PUT_LINE ('invalid roll number entered');	
 	WHEN VALUE_ERROR THEN
 		DBMS_OUTPUT.PUT_LINE('error occured in arithmatic operaions');
 	WHEN PROGRAM_ERROR THEN
 		DBMS_OUTPUT.PUT_LINE('internal program error occured');		
 	WHEN STORAGE_ERROR THEN
 		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');
+	WHEN OTHERS THEN
+		DBMS_OUTPUT.PUT_LINE ('error');
 
 END;
 /
@@ -61,5 +61,3 @@ BEGIN
 	END IF;
 END;
 /
-
-

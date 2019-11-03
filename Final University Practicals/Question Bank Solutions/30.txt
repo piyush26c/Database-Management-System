@@ -1,7 +1,7 @@
 >>>[30]
 > CREATE TABLE product30_1 (pid NUMBER(3,0) PRIMARY KEY, pname VARCHAR(30) NOT NULL);
 > CREATE TABLE order_items30_1 (pid NUMBER(3,0), FOREIGN KEY(pid) REFERENCES product30_1, qty NUMBER(3,0) NOT NULL);
->  ALTER TABLE product30_1 ADD pprice NUMBER(10,2) NOT NULL;
+> ALTER TABLE product30_1 ADD pprice NUMBER(10,2) NOT NULL;
 
 >>>
 DECLARE
@@ -22,11 +22,11 @@ BEGIN
 	mqty := 0;
 	OPEN idcheck(mpid);
 	IF idcheck%ISOPEN THEN
-		FETCH idcheck INTO temp;
+		FETCH idcheck INTO mqty;
 		IF idcheck%NOTFOUND THEN
 			RAISE prnotfound;
 		ELSE		
-			SELECT qty INTO mqty FROM order_items30_1 WHERE order_items30_1.pid = mpid;
+			--SELECT qty INTO mqty FROM order_items30_1 WHERE order_items30_1.pid = mpid;
 			IF mqty > 20 THEN
 				DBMS_OUTPUT.PUT_LINE('Hollaa...!!! You have recived 55% Discount on you ordered item');
 				SELECT pprice INTO mpprice FROM product30_1 WHERE product30_1.pid = mpid;
@@ -51,6 +51,4 @@ EXCEPTION
 		DBMS_OUTPUT.PUT_LINE('PL/SQL got out of memory | memory got corrupted');
 		
 END;
-/	
-
-	
+/		

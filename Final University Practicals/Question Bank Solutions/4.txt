@@ -21,8 +21,10 @@
 #	ALTER TABLE acc_fd_cust_dets MODIFY code_no DEFAULT NULL;
 #	ALTER TABLE acc_fd_cust_dets MODIFY acc_fd_no DEFAULT NULL;
 
-> [4.b] > CREATE OR REPLACE VIEW view_c_m_a_f_c_d AS SELECT cust_no, acc_fd_no FROM cust_mstr, acc_fd_cust_dets;
-		INSERT OPERATION ON VIEW : 
+> [4.b] > CREATE OR REPLACE VIEW view_c_m_a_f_c_d AS SELECT fname, acc_fd_no FROM cust_mstr, acc_fd_cust_dets WHERE cust_mstr.cust_no = acc_fd_cust_dets.code_no;
+		INSERT OPERATION ON VIEW : NOT ALLOWED
+		UPDATE OPERATION ON VIEW : NOT ALLOWED
+		DELETE OPERATION ON VIEW : DELETE FROM view_c_m_a_f_c_d WHERE fname = 'xyz';
 
 > [4.c] > reformatting already created table -> emp_mstr
 			# ALTER TABLE emp_mstr DROP COLUMN desg;
@@ -32,11 +34,3 @@
 		
 		>SELECT *FROM emp_mstr LEFT OUTER JOIN cntc_dets ON emp_mstr.emp_no = cntc_dets.code_no;
 		>SELECT *FROM emp_mstr RIGHT OUTER JOIN cntc_dets ON emp_mstr.emp_no = cntc_dets.code_no;
-		
-		
-		
-		
-		
-
-
-

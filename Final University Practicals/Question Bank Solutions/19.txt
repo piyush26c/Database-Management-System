@@ -75,7 +75,7 @@ public class JavaMongoDemo
 					DBCursor cursor2 = coll.find();
 					int k = 1;
 					while (cursor2.hasNext()) {
-						System.out.println("Inserted Document: " + k);
+						System.out.println("Document: " + k);
 						System.out.println(cursor2.next());
 						k++;
 					}
@@ -85,6 +85,9 @@ public class JavaMongoDemo
 				case 5:
 					flag = false;
 					break;
+				
+				default:
+					System.out.println("Enter the valid choice.");
 				}
 
 			}

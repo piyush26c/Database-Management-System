@@ -1,3 +1,8 @@
+> mysql -u root -package
+> CREATE DATABASE piyushrc
+> USE piyushrc
+
+
 package mongoo;
 
 import java.sql.Connection;
@@ -22,11 +27,11 @@ public class JDBCExample {
 		Scanner scan = new Scanner(System.in);
 		int choice = 0;
 
-
 		Connection conn = null;
-		Statement stmt = null;
+		Statement stmt = null;	//factory of resultset
+		
 		try{
-		       //STEP 2: Register JDBC driver
+		    //STEP 2: Register JDBC driver
 			Class.forName("com.mysql.jdbc.Driver");
 			
 			//STEP 3: Open a connection
@@ -57,6 +62,7 @@ public class JDBCExample {
 				}
 				case 2 :
 				{
+					
 					System.out.print("\nEnter the employe id : ");
 					int emp_id = scan.nextInt();
 					System.out.print("\nEnter the employe name : ");
@@ -65,8 +71,8 @@ public class JDBCExample {
 					stmt.executeUpdate(sql);
 					System.out.print("\nRecord inserted Successfully");
 					break;
-
 				}
+				
 				case 3 : 
 				{
 					System.out.print("\nEnter the employe id to be updated : ");
@@ -78,6 +84,7 @@ public class JDBCExample {
 					System.out.print("\nRecord updated Successfully");
 					break;
 				}
+				
 				case 4 :
 				{
 					System.out.print("\nEnter the employe id to be deleted: ");
@@ -114,10 +121,8 @@ public class JDBCExample {
 					break;
 					
 				default :
-					System.out.println("Enter the valid choice.");
-						
+					System.out.println("Enter the valid choice.");						
 				}
-
 			}
 		}catch (SQLException se) {
 			// Handle errors for JDBC
@@ -126,11 +131,13 @@ public class JDBCExample {
 			e.printStackTrace();
 
 		} finally {
-			try { if (stmt != null)
+			try { 
+			if (stmt != null)
 				stmt.close();
 			} catch (SQLException se2) {
-				try { if (conn != null)
-					conn.close();
+				try { 
+					if (conn != null)
+						conn.close();
 				} catch (SQLException se) {
 					se.printStackTrace();
 				}

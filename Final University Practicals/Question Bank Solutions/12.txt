@@ -1,9 +1,9 @@
 >>>[12.1]
 
  >  CREATE TABLE fine12_1 ( roll_no NUMBER(3), FOREIGN KEY(roll_no) REFERENCES borrower12_1 ON DELETE CASCADE, dor DATE, famount NUMBER(10,2));
- >  CREATE TABLE borrower12_1 (roll_no NUMBER(3) PRIMARY KEY, bname VARCHAR(30), doi DATE, book_name VARCHAR(30), status VARCHAR(30)    );
+ >  CREATE TABLE borrower12_1 (roll_no NUMBER(3) PRIMARY KEY, bname VARCHAR(30), doi DATE, book_name VARCHAR(30), status VARCHAR(30));
 
->> [FUNCTION PL/SQLBLOCK]
+>> [FUNCTION PL/SQLBLOCK]   as procedure for prblm statement is written in 8.txt
 
 CREATE OR REPLACE FUNCTION compute12_1(mdays IN NUMBER, mroll_no IN NUMBER)  
 RETURN NUMBER

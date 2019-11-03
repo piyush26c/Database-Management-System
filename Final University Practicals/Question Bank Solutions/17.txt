@@ -23,13 +23,5 @@
 > db.teachers.mapReduce (function() {emit(this.dname, this.salary);}, function(key, values) {return Array.sum(values)}, {query : {dname : 'COMP'}, out : 'total4'} )
 
 >>[5]
-
-
-
-
-
-
-
-
-
-
+> db.zipcode.mapReduce (function() {emit(this.city , this.pop);}, function(key, values) {return Array.sum(values)},
+(out: 'total4', query : {state  : 'NY'},) );

@@ -1,6 +1,6 @@
  > [1]
  
- >CREATE TABLE branch(branch_name VARCHAR(30), branch_city VARCHAR(30) NOT NULL, assets NUMBER(5) NOT NULL, PRIMARY KEY(branch_name), CHECK(assets >= 0));
+ > CREATE TABLE branch(branch_name VARCHAR(30), branch_city VARCHAR(30) NOT NULL, assets NUMBER(5) NOT NULL, PRIMARY KEY(branch_name), CHECK(assets >= 0));
  
  > CREATE TABLE account(acc_no NUMBER(3), branch_name VARCHAR(30), balance NUMBER(5), PRIMARY KEY(acc_no), FOREIGN KEY(branch_name) REFERENCES branch ON DELETE CASCADE, CHECK(balance >= 0));
  
@@ -10,7 +10,7 @@
  
  > CREATE TABLE loan(loan_no NUMBER(3), branch_name VARCHAR(30), amount NUMBER(5) NOT NULL, FOREIGN KEY(branch_name) REFERENCES branch ON DELETE CASCADE, CHECK(amount >= 0), PRIMARY KEY(loan_no) );
  
- >CREATE TABLE borrower(cust_name VARCHAR(30), loan_no NUMBER(3), FOREIGN KEY(cust_name) REFERENCES customer ON DELETE CASCADE, FOREIGN KEY(loan_no) REFERENCES loan ON DELETE CASCADE);
+ > CREATE TABLE borrower(cust_name VARCHAR(30), loan_no NUMBER(3), FOREIGN KEY(cust_name) REFERENCES customer ON DELETE CASCADE, FOREIGN KEY(loan_no) REFERENCES loan ON DELETE CASCADE);
  
  >[2] > CREATE SYNONYM cust FOR customer;
  >[3] > ALTER TABLE customer ADD phone_no  NUMBER(10);

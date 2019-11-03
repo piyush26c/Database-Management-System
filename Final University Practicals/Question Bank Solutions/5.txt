@@ -5,6 +5,6 @@
  > CREATE TABLE cust_mstr5_1 (custno VARCHAR(3) NOT NULL, fname VARCHAR(30) NOT NULL, lname VARCHAR(30) NOT NULL);
  > CREATE TABLE add_dets5_1 (code_no VARCHAR(3) NOT NULL, pincode NUMBER(2,0) NOT NULL);
  
- > SELECT* FROM cust_mstr5_1 WHERE custno IN (SELECT code_no FROM add_dets5_1 WHERE code_no LIKE 'c%' AND pincode NOT IN (SELECT pincode FROM add_dets5_1 WHERE code_no LIKE 'b%'));
+ > SELECT * FROM cust_mstr5_1 WHERE custno IN (SELECT code_no FROM add_dets5_1 WHERE code_no LIKE 'c%' AND pincode NOT IN (SELECT pincode FROM add_dets5_1 WHERE code_no LIKE 'b%'));
  
  

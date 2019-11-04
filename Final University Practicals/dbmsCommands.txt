@@ -9,11 +9,10 @@
 9] VIEW of a table get automatic delete if a table is deleted
 10] For proper formatting in database,
 	set lines 256
-    set trimout on
-    set tab off
+        set trimout on
+        set tab off
 	set pagesize 100
 	set colsep " | "
-	
 	
 [11] Always set new separate constraints for each column while creating the table;
 [12] to commit the operations performed  : COMMIT WORK    (WORK is optional)

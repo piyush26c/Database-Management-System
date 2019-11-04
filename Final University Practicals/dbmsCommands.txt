@@ -1,0 +1,20 @@
+1] CREATE USER practise IDENTIFIED BY practise;
+2] GRANT ALL PRIVILEGES TO practise;
+3] to get the current user -> SELECT USER FROM DUAL;
+4] to get screen clear -> CLEAR SCREEN;
+5] to change the name of the current table in database -> RENAME prc to prc1;
+6] at a time we can fetch the data from two tables -> SELECT *FROM prc1, prc2;
+7] A CONSTRAINT clause is an optional part of a CREATE TABLE statement or ALTER TABLE statement. A constraint is a rule to which data must conform. Constraint names are optional.
+8] CONSTRAINT statments written for multiple columns while creating table all these contraints statements must be written at last in statment of creating table(ALL OF THEM).
+9] VIEW of a table get automatic delete if a table is deleted
+10] For proper formatting in database,
+	set lines 256
+    set trimout on
+    set tab off
+	set pagesize 100
+	set colsep " | "
+	
+	
+[11] Always set new separate constraints for each column while creating the table;
+[12] to commit the operations performed  : COMMIT WORK    (WORK is optional)
+[13] to rollback the operations performed : ROLLBACK WORK (WORK is optional)

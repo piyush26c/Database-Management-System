@@ -1,0 +1,15 @@
+> mysql -u root -package
+> CREATE DATABASE piyushrc
+> USE piyushrc
+
+#Connectivity steps
+OS : (Debian) Ubuntu 16.04
+IDE : Eclipse - OXYGEN
+
+step-1 : create new Java Project.
+step-2 : By right clicking on the project file at left corner of IDE(Package Explorer), there will be an option available called Build path.
+step-3 : In Build Path go to Add external archives, it will ask you the path of archives(JAR files) which are to be included,
+         include any one of the JAR file(mysql-connectors) I have provided in this current repository.
+step-4 : Here you are done you can see all the packages and their class in Package Explorer - Reference Libraries.
+step-5 : Type the code provided in this current repositry and you are done!!!
+

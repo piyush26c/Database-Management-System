@@ -1,2 +1,2 @@
 # Database-Management-System
-This repository contains the material related to DBMS, practised during my course.
+This repository contains the study material and the assignments related to DBMS, practised during my course.

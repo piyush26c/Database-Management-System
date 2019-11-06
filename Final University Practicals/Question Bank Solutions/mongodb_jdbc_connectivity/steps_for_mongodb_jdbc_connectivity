@@ -2,9 +2,13 @@
 OS : (Debian) Ubuntu 16.04
 IDE : Eclipse - OXYGEN
 
+Note : Current repository contains the mongodb_jdbc_connectivity code(19.txt) which works with the driver uploaded in this repository,
+       catch is as you change the driver method definitions and implemention changes hence provided code will only run for provide driver.
+
 step-1 : create new Java Project.
 step-2 : By right clicking on the project file at left corner of IDE(Package Explorer), there will be an option available called Build path.
 step-3 : In Build Path go to Add external archives, it will ask you the path of archives(JAR files) which are to be included,
          include any one of the JAR file(mongo-java-drivers) I have provided in this current repository.
 step-4 : Here you are done you can see all the packages and their class in Package Explorer - Reference Libraries.
 step-5 : Type the code(19.txt) provided in this current repositry and you are done!!!
+

@@ -12,7 +12,7 @@
         set trimout on
         set tab off
 	set pagesize 100
-	set colsep " | "
+	set colsep " | "           #this is used as an indicator for column separator on sqlplus command prompt
 	
 [11] Always set new separate constraints for each column while creating the table;
 [12] to commit the operations performed  : COMMIT WORK    (WORK is optional)
